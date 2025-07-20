@@ -1,0 +1,597 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Chat Interface</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Arial', sans-serif;
+        }
+        
+        body {
+            background-color: #f5f5f5;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .chat-container {
+            max-width: 900px;
+            width: 100%;
+            margin: 20px auto;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1;
+            overflow: hidden;
+        }
+        
+        .chat-header {
+            background-color: #4285f4;
+            color: white;
+            padding: 15px 20px;
+            border-top-left-radius: 10px;
+            border-top-right-radius: 10px;
+            text-align: center;
+        }
+        
+        .chat-messages {
+            flex-grow: 1;
+            padding: 20px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            max-height: calc(100vh - 180px);
+        }
+        
+        .message {
+            padding: 12px 15px;
+            border-radius: 18px;
+            max-width: 70%;
+            word-wrap: break-word;
+        }
+        
+        .user-message {
+            background-color: #e3f2fd;
+            color: #333;
+            align-self: flex-end;
+            border-bottom-right-radius: 5px;
+        }
+        
+        .ai-message {
+            background-color: #f1f1f1;
+            color: #333;
+            align-self: flex-start;
+            border-bottom-left-radius: 5px;
+        }
+        
+        .thinking-section {
+            background-color: #fff3cd;
+            border: 1px solid #ffeaa7;
+            border-radius: 8px;
+            padding: 10px;
+            margin-bottom: 10px;
+            font-style: italic;
+            color: #856404;
+        }
+        
+        .thinking-header {
+            font-weight: bold;
+            margin-bottom: 5px;
+            color: #856404;
+        }
+        
+        .final-response {
+            background-color: #f1f1f1;
+            padding: 10px;
+            border-radius: 8px;
+        }
+        
+        .chat-input {
+            display: flex;
+            padding: 15px;
+            background-color: #fff;
+            border-top: 1px solid #eee;
+        }
+        
+        .chat-input input {
+            flex-grow: 1;
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            border-radius: 25px;
+            outline: none;
+            font-size: 16px;
+        }
+        
+        .chat-input button {
+            background-color: #4285f4;
+            color: white;
+            border: none;
+            border-radius: 25px;
+            padding: 12px 20px;
+            margin-left: 10px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s;
+        }
+        
+        .chat-input button:hover {
+            background-color: #3367d6;
+        }
+        
+        .typing-indicator {
+            display: none;
+            align-self: flex-start;
+            background-color: #f1f1f1;
+            padding: 12px 15px;
+            border-radius: 18px;
+            border-bottom-left-radius: 5px;
+            margin-bottom: 10px;
+        }
+        
+        .typing-indicator span {
+            height: 8px;
+            width: 8px;
+            background-color: #666;
+            display: inline-block;
+            border-radius: 50%;
+            animation: typing 1s infinite;
+            margin: 0 2px;
+        }
+        
+        .typing-indicator span:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+        
+        .typing-indicator span:nth-child(3) {
+            animation-delay: 0.4s;
+        }
+        
+        @keyframes typing {
+            0% { transform: translateY(0); }
+            50% { transform: translateY(-5px); }
+            100% { transform: translateY(0); }
+        }
+        
+        /* Markdown styles */
+        .markdown-content h1,
+        .markdown-content h2,
+        .markdown-content h3,
+        .markdown-content h4,
+        .markdown-content h5,
+        .markdown-content h6 {
+            margin: 10px 0 5px 0;
+            color: #333;
+        }
+        
+        .markdown-content h1 { font-size: 1.5em; font-weight: bold; }
+        .markdown-content h2 { font-size: 1.3em; font-weight: bold; }
+        .markdown-content h3 { font-size: 1.2em; font-weight: bold; }
+        .markdown-content h4 { font-size: 1.1em; font-weight: bold; }
+        .markdown-content h5 { font-size: 1em; font-weight: bold; }
+        .markdown-content h6 { font-size: 0.9em; font-weight: bold; }
+        
+        .markdown-content p {
+            margin: 8px 0;
+            line-height: 1.6;
+        }
+        
+        .markdown-content ul,
+        .markdown-content ol {
+            margin: 8px 0;
+            padding-left: 20px;
+        }
+        
+        .markdown-content li {
+            margin: 4px 0;
+        }
+        
+        .markdown-content blockquote {
+            margin: 10px 0;
+            padding: 10px 15px;
+            border-left: 4px solid #4285f4;
+            background-color: #f8f9fa;
+            font-style: italic;
+        }
+        
+        .markdown-content pre {
+            background-color: #f8f9fa;
+            border: 1px solid #e9ecef;
+            border-radius: 4px;
+            padding: 12px;
+            margin: 10px 0;
+            overflow-x: auto;
+            font-family: 'Courier New', monospace;
+        }
+        
+        .markdown-content code {
+            background-color: #f8f9fa;
+            padding: 2px 4px;
+            border-radius: 3px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+        }
+        
+        .markdown-content pre code {
+            background-color: transparent;
+            padding: 0;
+            border-radius: 0;
+        }
+        
+        .markdown-content a {
+            color: #4285f4;
+            text-decoration: none;
+        }
+        
+        .markdown-content a:hover {
+            text-decoration: underline;
+        }
+        
+        .markdown-content table {
+            border-collapse: collapse;
+            width: 100%;
+            margin: 10px 0;
+        }
+        
+        .markdown-content th,
+        .markdown-content td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        
+        .markdown-content th {
+            background-color: #f8f9fa;
+            font-weight: bold;
+        }
+        
+        .markdown-content hr {
+            margin: 15px 0;
+            border: none;
+            border-top: 1px solid #ddd;
+        }
+        
+        .markdown-content em {
+            font-style: italic;
+        }
+        
+        .markdown-content strong {
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="chat-container">
+        <div class="chat-header">
+            <h2>AI Chat Assistant</h2>
+        </div>
+        <div class="chat-messages" id="chat-messages">
+            <div class="message ai-message">
+                <div class="final-response markdown-content">
+                    <p>Hello! How can I assist you today?</p>
+                </div>
+            </div>
+        </div>
+        <div class="typing-indicator" id="typing-indicator">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+        <div class="chat-input">
+            <input type="text" id="user-input" placeholder="Type your message here..." autocomplete="off">
+            <button id="send-button">Send</button>
+        </div>
+    </div>
+
+    <!-- Marked.js library for markdown parsing -->
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const chatMessages = document.getElementById('chat-messages');
+            const userInput = document.getElementById('user-input');
+            const sendButton = document.getElementById('send-button');
+            const typingIndicator = document.getElementById('typing-indicator');
+            
+            // Function to add a message to the chat
+            function addMessage(message, isUser) {
+                const messageDiv = document.createElement('div');
+                messageDiv.classList.add('message');
+                messageDiv.classList.add(isUser ? 'user-message' : 'ai-message');
+                
+                if (isUser) {
+                    messageDiv.textContent = message;
+                } else {
+                    // Parse thinking response
+                    const parsedResponse = parseThinkingResponse(message);
+                    messageDiv.innerHTML = parsedResponse;
+                }
+                
+                chatMessages.appendChild(messageDiv);
+                chatMessages.scrollTop = chatMessages.scrollHeight;
+            }
+            
+            // Function to parse thinking response
+            function parseThinkingResponse(response) {
+                // Check if response contains thinking tags
+                const thinkingRegex = /<thinking>([\s\S]*?)<\/thinking>/;
+                const thinkingMatch = response.match(thinkingRegex);
+                
+                if (thinkingMatch) {
+                    const thinkingContent = thinkingMatch[1].trim();
+                    const finalResponse = response.replace(thinkingRegex, '').trim();
+                    
+                    let html = '';
+                    
+                    // Add thinking section if present
+                    if (thinkingContent) {
+                        html += `
+                            <div class="thinking-section">
+                                <div class="thinking-header">🤔 Thinking...</div>
+                                <div class="markdown-content">${renderMarkdown(thinkingContent)}</div>
+                            </div>
+                        `;
+                    }
+                    
+                    // Add final response
+                    if (finalResponse) {
+                        html += `<div class="final-response markdown-content">${renderMarkdown(finalResponse)}</div>`;
+                    }
+                    
+                    return html;
+                } else {
+                    // No thinking tags, return as regular response
+                    return `<div class="final-response markdown-content">${renderMarkdown(response)}</div>`;
+                }
+            }
+            
+            // Function to render markdown
+            function renderMarkdown(text) {
+                if (!text) return '';
+                
+                // Configure marked options
+                marked.setOptions({
+                    breaks: true,
+                    gfm: true,
+                    sanitize: false,
+                    smartLists: true,
+                    smartypants: true
+                });
+                
+                try {
+                    return marked.parse(text);
+                } catch (error) {
+                    console.error('Markdown parsing error:', error);
+                    return escapeHtml(text);
+                }
+            }
+            
+            // Function to escape HTML characters
+            function escapeHtml(text) {
+                const map = {
+                    '&': '&amp;',
+                    '<': '&lt;',
+                    '>': '&gt;',
+                    '"': '&quot;',
+                    "'": '&#039;'
+                };
+                return text.replace(/[&<>"']/g, function(m) { return map[m]; });
+            }
+            
+            // Function to show typing indicator
+            function showTypingIndicator() {
+                typingIndicator.style.display = 'block';
+                chatMessages.scrollTop = chatMessages.scrollHeight;
+            }
+            
+            // Function to hide typing indicator
+            function hideTypingIndicator() {
+                typingIndicator.style.display = 'none';
+            }
+            
+            // Function to send message to server with streaming
+            async function sendMessage() {
+                const message = userInput.value.trim();
+                if (message === '') return;
+                
+                // Add user message to chat
+                addMessage(message, true);
+                userInput.value = '';
+                
+                // Show typing indicator
+                showTypingIndicator();
+                
+                try {
+                    // Create message container for streaming response
+                    const messageDiv = document.createElement('div');
+                    messageDiv.classList.add('message', 'ai-message');
+                    
+                    // Create containers for thinking and response
+                    const thinkingDiv = document.createElement('div');
+                    thinkingDiv.classList.add('thinking-section');
+                    thinkingDiv.style.display = 'none';
+                    
+                    const thinkingHeader = document.createElement('div');
+                    thinkingHeader.classList.add('thinking-header');
+                    thinkingHeader.textContent = '🤔 Thinking...';
+                    
+                    const thinkingContent = document.createElement('div');
+                    
+                    const responseDiv = document.createElement('div');
+                    responseDiv.classList.add('final-response');
+                    responseDiv.style.display = 'none';
+                    
+                    thinkingDiv.appendChild(thinkingHeader);
+                    thinkingDiv.appendChild(thinkingContent);
+                    messageDiv.appendChild(thinkingDiv);
+                    messageDiv.appendChild(responseDiv);
+                    
+                    chatMessages.appendChild(messageDiv);
+                    hideTypingIndicator();
+                    
+                    // Send message to streaming endpoint
+                    const formData = new FormData();
+                    formData.append('message', message);
+                    
+                    const response = await fetch('/chat/stream', {
+                        method: 'POST',
+                        body: formData
+                    });
+                    
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    
+                    const reader = response.body.getReader();
+                    const decoder = new TextDecoder();
+                    
+                    let buffer = '';
+                    let inThinking = false;
+                    let thinkingText = '';
+                    let responseText = '';
+                    
+                    console.log('Starting to read stream...');
+                    
+                    while (true) {
+                        const { done, value } = await reader.read();
+                        if (done) {
+                            console.log('Stream completed');
+                            break;
+                        }
+                        
+                        const chunk = decoder.decode(value, { stream: true });
+                        console.log('Received raw chunk:', chunk);
+                        
+                        // Process SSE format - split by lines and handle data: prefix
+                        const lines = chunk.split('\n');
+                        for (const line of lines) {
+                            if (line.startsWith('data:')) {
+                                // Remove "data:" prefix but preserve spaces
+                                const cleanedData = line.substring(5);
+                                if (cleanedData) {
+                                    buffer += cleanedData;
+                                }
+                            }
+                        }
+                        
+                        console.log('Current buffer:', buffer);
+                        
+                        // Process the buffer for complete thinking tags (both <think> and <thinking>)
+                        let remaining = buffer;
+                        
+                        while (remaining.length > 0) {
+                            if (!inThinking && (remaining.includes('<thinking>') || remaining.includes('<think>'))) {
+                                let startTag, startIndex;
+                                
+                                // Check for both tag types
+                                const thinkingIndex = remaining.indexOf('<thinking>');
+                                const thinkIndex = remaining.indexOf('<think>');
+                                
+                                if (thinkingIndex !== -1 && (thinkIndex === -1 || thinkingIndex < thinkIndex)) {
+                                    startTag = '<thinking>';
+                                    startIndex = thinkingIndex;
+                                } else if (thinkIndex !== -1) {
+                                    startTag = '<think>';
+                                    startIndex = thinkIndex;
+                                } else {
+                                    break;
+                                }
+                                
+                                // Add any text before thinking tag to FINAL RESPONSE
+                                const beforeThinking = remaining.substring(0, startIndex);
+                                if (beforeThinking.trim()) {
+                                    responseText += beforeThinking;
+                                    responseDiv.innerHTML = renderMarkdown(responseText);
+                                    responseDiv.classList.add('markdown-content');
+                                    responseDiv.style.display = 'block';
+                                    console.log('Added to final response before thinking:', beforeThinking);
+                                }
+                                remaining = remaining.substring(startIndex + startTag.length);
+                                inThinking = true;
+                                thinkingDiv.style.display = 'block';
+                                console.log('🤔 Started thinking section with tag:', startTag);
+                            } else if (inThinking && (remaining.includes('</thinking>') || remaining.includes('</think>'))) {
+                                let endTag, endIndex;
+                                
+                                // Check for both end tag types
+                                const endThinkingIndex = remaining.indexOf('</thinking>');
+                                const endThinkIndex = remaining.indexOf('</think>');
+                                
+                                if (endThinkingIndex !== -1 && (endThinkIndex === -1 || endThinkingIndex < endThinkIndex)) {
+                                    endTag = '</thinking>';
+                                    endIndex = endThinkingIndex;
+                                } else if (endThinkIndex !== -1) {
+                                    endTag = '</think>';
+                                    endIndex = endThinkIndex;
+                                } else {
+                                    break;
+                                }
+                                
+                                // Add thinking content to THINKING PANEL
+                                const thinkingChunk = remaining.substring(0, endIndex);
+                                if (thinkingChunk.trim()) {
+                                    thinkingText += thinkingChunk;
+                                    thinkingContent.innerHTML = renderMarkdown(thinkingText);
+                                    thinkingContent.classList.add('markdown-content');
+                                    console.log('Added to thinking panel:', thinkingChunk);
+                                }
+                                remaining = remaining.substring(endIndex + endTag.length);
+                                inThinking = false;
+                                responseDiv.style.display = 'block';
+                                console.log('✅ Ended thinking section with tag:', endTag);
+                                console.log('📝 Now switching to final response mode');
+                            } else {
+                                // Process remaining text based on current mode
+                                if (inThinking) {
+                                    // Add to THINKING PANEL
+                                    thinkingText += remaining;
+                                    thinkingContent.innerHTML = renderMarkdown(thinkingText);
+                                    thinkingContent.classList.add('markdown-content');
+                                    console.log('Adding to thinking panel:', remaining);
+                                } else {
+                                    // Add to FINAL RESPONSE PANEL
+                                    responseText += remaining;
+                                    responseDiv.innerHTML = renderMarkdown(responseText);
+                                    responseDiv.classList.add('markdown-content');
+                                    if (responseText.trim()) {
+                                        responseDiv.style.display = 'block';
+                                    }
+                                    console.log('Adding to final response:', remaining);
+                                }
+                                remaining = '';
+                            }
+                        }
+                        
+                        // Keep any remaining partial tags in buffer
+                        buffer = remaining;
+                        
+                        // Scroll to bottom
+                        chatMessages.scrollTop = chatMessages.scrollHeight;
+                    }
+                    
+                } catch (error) {
+                    console.error('Error:', error);
+                    hideTypingIndicator();
+                    addMessage('Sorry, there was an error processing your request.', false);
+                }
+            }
+            
+            // Event listeners
+            sendButton.addEventListener('click', sendMessage);
+            
+            userInput.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    sendMessage();
+                }
+            });
+        });
+    </script>
+</body>
+</html>

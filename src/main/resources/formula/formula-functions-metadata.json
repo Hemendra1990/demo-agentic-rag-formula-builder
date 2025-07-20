@@ -1,0 +1,1692 @@
+{
+  "functions": {
+    "IF": {
+      "category": "Logical",
+      "description": "Returns one value if a condition is true, and another if false",
+      "parameters": [
+        {
+          "name": "condition",
+          "type": "String",
+          "description": "The condition to evaluate",
+          "required": true
+        },
+        {
+          "name": "trueValue",
+          "type": "Object",
+          "description": "Value to return if condition is true",
+          "required": true
+        },
+        {
+          "name": "falseValue",
+          "type": "Object",
+          "description": "Value to return if condition is false",
+          "required": true
+        }
+      ],
+      "return_type": "Object",
+      "examples": [
+        "IF(isActive, 'Active', 'Inactive')",
+        "IF(amount > 50000, 'High Value', 'Standard')",
+        "IF(ISBLANK(email), 'No Email', email)"
+      ],
+      "use_cases": [
+        "Conditional formatting",
+        "Status determination",
+        "Default value handling"
+      ],
+      "related_functions": ["CASE", "AND", "OR", "ISBLANK"],
+      "class": "LogicalFormulaFieldService",
+      "method": "IF"
+    },
+    "AND": {
+      "category": "Logical",
+      "description": "Returns true if all values are true",
+      "parameters": [
+        {
+          "name": "values",
+          "type": "Boolean...",
+          "description": "Variable number of boolean values",
+          "required": true
+        }
+      ],
+      "return_type": "Boolean",
+      "examples": [
+        "AND(isActive, isVerified)",
+        "AND(amount > 0, status == 'Approved', isActive)"
+      ],
+      "use_cases": [
+        "Multiple condition checks",
+        "Validation logic",
+        "Complex filtering"
+      ],
+      "related_functions": ["OR", "NOT", "IF"],
+      "class": "LogicalFormulaFieldService",
+      "method": "and"
+    },
+    "OR": {
+      "category": "Logical",
+      "description": "Returns true if any value is true",
+      "parameters": [
+        {
+          "name": "values",
+          "type": "Boolean...",
+          "description": "Variable number of boolean values",
+          "required": true
+        }
+      ],
+      "return_type": "Boolean",
+      "examples": [
+        "OR(isActive, isVerified)",
+        "OR(priority == 'High', amount > 100000)"
+      ],
+      "use_cases": [
+        "Alternative condition checks",
+        "Inclusive filtering",
+        "Fallback logic"
+      ],
+      "related_functions": ["AND", "NOT", "IF"],
+      "class": "LogicalFormulaFieldService",
+      "method": "or"
+    },
+    "NOT": {
+      "category": "Logical",
+      "description": "Returns the opposite boolean value",
+      "parameters": [
+        {
+          "name": "value",
+          "type": "Boolean",
+          "description": "Boolean value to negate",
+          "required": true
+        }
+      ],
+      "return_type": "Boolean",
+      "examples": [
+        "NOT(isActive)",
+        "NOT(ISBLANK(email))"
+      ],
+      "use_cases": [
+        "Negation logic",
+        "Inverse conditions",
+        "Boolean operations"
+      ],
+      "related_functions": ["AND", "OR", "IF"],
+      "class": "LogicalFormulaFieldService",
+      "method": "not"
+    },
+    "BLANKVALUE": {
+      "category": "Logical",
+      "description": "Returns the default value if the input is blank or null",
+      "parameters": [
+        {
+          "name": "value",
+          "type": "Object",
+          "description": "Value to check",
+          "required": true
+        },
+        {
+          "name": "defaultValue",
+          "type": "Object",
+          "description": "Default value to return if blank",
+          "required": true
+        }
+      ],
+      "return_type": "Object",
+      "examples": [
+        "BLANKVALUE(phoneNumber, 'No Phone')",
+        "BLANKVALUE(description, 'No Description')"
+      ],
+      "use_cases": [
+        "Default value assignment",
+        "Null handling",
+        "Display formatting"
+      ],
+      "related_functions": ["NULLVALUE", "ISBLANK", "IF"],
+      "class": "LogicalFormulaFieldService",
+      "method": "blankValue"
+    },
+    "ISBLANK": {
+      "category": "Logical",
+      "description": "Returns true if the value is blank or null",
+      "parameters": [
+        {
+          "name": "value",
+          "type": "Object",
+          "description": "Value to check",
+          "required": true
+        }
+      ],
+      "return_type": "Boolean",
+      "examples": [
+        "ISBLANK(email)",
+        "ISBLANK(description)"
+      ],
+      "use_cases": [
+        "Validation checks",
+        "Conditional logic",
+        "Data quality assessment"
+      ],
+      "related_functions": ["ISNULL", "BLANKVALUE", "IF"],
+      "class": "LogicalFormulaFieldService",
+      "method": "isBlank"
+    },
+    "ISNULL": {
+      "category": "Logical",
+      "description": "Returns true if the value is null",
+      "parameters": [
+        {
+          "name": "value",
+          "type": "Object",
+          "description": "Value to check",
+          "required": true
+        }
+      ],
+      "return_type": "Boolean",
+      "examples": [
+        "ISNULL(customField)",
+        "ISNULL(relatedRecord)"
+      ],
+      "use_cases": [
+        "Null validation",
+        "Data integrity checks",
+        "Conditional processing"
+      ],
+      "related_functions": ["ISBLANK", "NULLVALUE", "IF"],
+      "class": "LogicalFormulaFieldService",
+      "method": "isNull"
+    },
+    "ISNUMBER": {
+      "category": "Logical",
+      "description": "Returns true if the value is a number",
+      "parameters": [
+        {
+          "name": "value",
+          "type": "Object",
+          "description": "Value to check",
+          "required": true
+        }
+      ],
+      "return_type": "Boolean",
+      "examples": [
+        "ISNUMBER(amount)",
+        "ISNUMBER(stringValue)"
+      ],
+      "use_cases": [
+        "Type validation",
+        "Data format checks",
+        "Mathematical operations prep"
+      ],
+      "related_functions": ["VALUE", "TEXT", "IF"],
+      "class": "LogicalFormulaFieldService",
+      "method": "isNumber"
+    },
+    "NULLVALUE": {
+      "category": "Logical",
+      "description": "Returns the default value if the input is null",
+      "parameters": [
+        {
+          "name": "value",
+          "type": "Object",
+          "description": "Value to check",
+          "required": true
+        },
+        {
+          "name": "defaultValue",
+          "type": "Object",
+          "description": "Default value to return if null",
+          "required": true
+        }
+      ],
+      "return_type": "Object",
+      "examples": [
+        "NULLVALUE(customField, 'Not Set')",
+        "NULLVALUE(amount, 0)"
+      ],
+      "use_cases": [
+        "Null handling",
+        "Default value assignment",
+        "Data normalization"
+      ],
+      "related_functions": ["BLANKVALUE", "ISNULL", "IF"],
+      "class": "LogicalFormulaFieldService",
+      "method": "nullValue"
+    },
+    "CASE": {
+      "category": "Logical",
+      "description": "Compares a value against multiple cases and returns the corresponding result",
+      "parameters": [
+        {
+          "name": "value",
+          "type": "Object",
+          "description": "Value to compare",
+          "required": true
+        },
+        {
+          "name": "values",
+          "type": "Object...",
+          "description": "Alternating case values and results, with final else result",
+          "required": true
+        }
+      ],
+      "return_type": "Object",
+      "examples": [
+        "CASE(priority, 'High', '🔴', 'Medium', '🟡', 'Low', '🟢', '⚪')",
+        "CASE(status, 'Open', 'In Progress', 'Closed', 'Completed', 'Unknown')"
+      ],
+      "use_cases": [
+        "Multi-way branching",
+        "Status mapping",
+        "Category assignment"
+      ],
+      "related_functions": ["IF", "ISPICKVAL"],
+      "class": "LogicalFormulaFieldService",
+      "method": "CASE"
+    },
+    "DATE": {
+      "category": "Date",
+      "description": "Creates a date from year, month, and day values",
+      "parameters": [
+        {
+          "name": "year",
+          "type": "int",
+          "description": "Year value",
+          "required": true
+        },
+        {
+          "name": "month",
+          "type": "int",
+          "description": "Month value (0-11)",
+          "required": true
+        },
+        {
+          "name": "day",
+          "type": "int",
+          "description": "Day value (1-31)",
+          "required": true
+        }
+      ],
+      "return_type": "Date",
+      "examples": [
+        "DATE(2024, 0, 15)",
+        "DATE(YEAR(TODAY()), 11, 31)"
+      ],
+      "use_cases": [
+        "Date construction",
+        "Fixed date creation",
+        "Date calculations"
+      ],
+      "related_functions": ["TODAY", "DATEVALUE", "YEAR", "MONTH", "DAY"],
+      "class": "DateAndTimeFormulaFieldService",
+      "method": "date"
+    },
+    "DATEVALUE": {
+      "category": "Date",
+      "description": "Converts various date formats to a Date object",
+      "parameters": [
+        {
+          "name": "value",
+          "type": "Object",
+          "description": "Date value (Date, LocalDate, LocalDateTime, OffsetDateTime, or String)",
+          "required": true
+        }
+      ],
+      "return_type": "Date",
+      "examples": [
+        "DATEVALUE('2024-01-15')",
+        "DATEVALUE(createdDate)"
+      ],
+      "use_cases": [
+        "Date conversion",
+        "String to date parsing",
+        "Date normalization"
+      ],
+      "related_functions": ["DATE", "DATETIMEVALUE", "FORMATDATE"],
+      "class": "DateAndTimeFormulaFieldService",
+      "method": "dateValue"
+    },
+    "TODAY": {
+      "category": "Date",
+      "description": "Returns the current date",
+      "parameters": [],
+      "return_type": "LocalDate",
+      "examples": [
+        "TODAY()",
+        "ADDDAYS(TODAY(), 30)"
+      ],
+      "use_cases": [
+        "Current date reference",
+        "Date calculations",
+        "Time-based logic"
+      ],
+      "related_functions": ["NOW", "ADDDAYS", "DURATIONINDAYS"],
+      "class": "DateAndTimeFormulaFieldService",
+      "method": "today"
+    },
+    "NOW": {
+      "category": "Date",
+      "description": "Returns the current date and time",
+      "parameters": [],
+      "return_type": "LocalDateTime",
+      "examples": [
+        "NOW()",
+        "FORMATDATE(NOW(), 'yyyy-MM-dd HH:mm:ss')"
+      ],
+      "use_cases": [
+        "Current timestamp",
+        "Time calculations",
+        "Audit trails"
+      ],
+      "related_functions": ["TODAY", "TIMENOW", "TIMEVALUE"],
+      "class": "DateAndTimeFormulaFieldService",
+      "method": "now"
+    },
+    "ADDMONTHS": {
+      "category": "Date",
+      "description": "Adds the specified number of months to a date",
+      "parameters": [
+        {
+          "name": "date",
+          "type": "Object",
+          "description": "Date to modify",
+          "required": true
+        },
+        {
+          "name": "months",
+          "type": "int",
+          "description": "Number of months to add",
+          "required": true
+        }
+      ],
+      "return_type": "Date",
+      "examples": [
+        "ADDMONTHS(contractStartDate, 12)",
+        "ADDMONTHS(TODAY(), 3)"
+      ],
+      "use_cases": [
+        "Contract calculations",
+        "Future date planning",
+        "Expiration dates"
+      ],
+      "related_functions": ["ADDDAYS", "DURATIONINMONTHS", "MONTH"],
+      "class": "DateAndTimeFormulaFieldService",
+      "method": "addMonths"
+    },
+    "ADDDAYS": {
+      "category": "Date",
+      "description": "Adds the specified number of days to a date",
+      "parameters": [
+        {
+          "name": "date",
+          "type": "Object",
+          "description": "Date to modify",
+          "required": true
+        },
+        {
+          "name": "days",
+          "type": "int",
+          "description": "Number of days to add",
+          "required": true
+        }
+      ],
+      "return_type": "Date",
+      "examples": [
+        "ADDDAYS(TODAY(), 7)",
+        "ADDDAYS(dueDate, -3)"
+      ],
+      "use_cases": [
+        "Due date calculations",
+        "Reminder dates",
+        "Schedule planning"
+      ],
+      "related_functions": ["ADDMONTHS", "DURATIONINDAYS", "TODAY"],
+      "class": "DateAndTimeFormulaFieldService",
+      "method": "addDays"
+    },
+    "DATETIMEVALUE": {
+      "category": "Date",
+      "description": "Converts a string to a DateTime value (GMT)",
+      "parameters": [
+        {
+          "name": "dateTime",
+          "type": "String",
+          "description": "DateTime string in format 'yyyy-MM-dd HH:mm:ss'",
+          "required": true
+        }
+      ],
+      "return_type": "Date",
+      "examples": [
+        "DATETIMEVALUE('2024-01-15 10:30:00')",
+        "DATETIMEVALUE('2024-12-31 23:59:59')"
+      ],
+      "use_cases": [
+        "DateTime parsing",
+        "Time zone handling",
+        "Timestamp conversion"
+      ],
+      "related_functions": ["DATEVALUE", "FORMATDATE", "NOW"],
+      "class": "DateAndTimeFormulaFieldService",
+      "method": "dateTimeValue"
+    },
+    "DAY": {
+      "category": "Date",
+      "description": "Returns the day of the month (1-31)",
+      "parameters": [
+        {
+          "name": "date",
+          "type": "Object",
+          "description": "Date value",
+          "required": true
+        }
+      ],
+      "return_type": "int",
+      "examples": [
+        "DAY(TODAY())",
+        "DAY(createdDate)"
+      ],
+      "use_cases": [
+        "Day extraction",
+        "Date formatting",
+        "Calendar calculations"
+      ],
+      "related_functions": ["MONTH", "YEAR", "WEEKDAY"],
+      "class": "DateAndTimeFormulaFieldService",
+      "method": "day"
+    },
+    "MONTH": {
+      "category": "Date",
+      "description": "Returns the month component (1-12)",
+      "parameters": [
+        {
+          "name": "date",
+          "type": "Object",
+          "description": "Date value",
+          "required": true
+        }
+      ],
+      "return_type": "int",
+      "examples": [
+        "MONTH(TODAY())",
+        "MONTH(contractDate)"
+      ],
+      "use_cases": [
+        "Month extraction",
+        "Seasonal calculations",
+        "Date grouping"
+      ],
+      "related_functions": ["DAY", "YEAR", "ADDMONTHS"],
+      "class": "DateAndTimeFormulaFieldService",
+      "method": "month"
+    },
+    "YEAR": {
+      "category": "Date",
+      "description": "Returns the year component",
+      "parameters": [
+        {
+          "name": "date",
+          "type": "Object",
+          "description": "Date value",
+          "required": true
+        }
+      ],
+      "return_type": "int",
+      "examples": [
+        "YEAR(TODAY())",
+        "YEAR(dateOfBirth)"
+      ],
+      "use_cases": [
+        "Year extraction",
+        "Age calculations",
+        "Yearly reporting"
+      ],
+      "related_functions": ["DAY", "MONTH", "ISOYEAR"],
+      "class": "DateAndTimeFormulaFieldService",
+      "method": "year"
+    },
+    "HOUR": {
+      "category": "Date",
+      "description": "Returns the hour component (0-23)",
+      "parameters": [
+        {
+          "name": "date",
+          "type": "Object",
+          "description": "Date value",
+          "required": true
+        }
+      ],
+      "return_type": "int",
+      "examples": [
+        "HOUR(NOW())",
+        "HOUR(createdDate)"
+      ],
+      "use_cases": [
+        "Hour extraction",
+        "Time-based logic",
+        "Business hours checking"
+      ],
+      "related_functions": ["MINUTE", "SECOND", "TIMENOW"],
+      "class": "DateAndTimeFormulaFieldService",
+      "method": "hour"
+    },
+    "MINUTE": {
+      "category": "Date",
+      "description": "Returns the minute component (0-59)",
+      "parameters": [
+        {
+          "name": "date",
+          "type": "Object",
+          "description": "Date value",
+          "required": true
+        }
+      ],
+      "return_type": "int",
+      "examples": [
+        "MINUTE(NOW())",
+        "MINUTE(appointmentTime)"
+      ],
+      "use_cases": [
+        "Minute extraction",
+        "Time formatting",
+        "Precise timing"
+      ],
+      "related_functions": ["HOUR", "SECOND", "TIMEVALUE"],
+      "class": "DateAndTimeFormulaFieldService",
+      "method": "minute"
+    },
+    "SECOND": {
+      "category": "Date",
+      "description": "Returns the second component (0-59)",
+      "parameters": [
+        {
+          "name": "date",
+          "type": "Object",
+          "description": "Date value",
+          "required": true
+        }
+      ],
+      "return_type": "int",
+      "examples": [
+        "SECOND(NOW())",
+        "SECOND(timestampField)"
+      ],
+      "use_cases": [
+        "Second extraction",
+        "Precise timing",
+        "Timestamp analysis"
+      ],
+      "related_functions": ["HOUR", "MINUTE", "GETMILLISECOND"],
+      "class": "DateAndTimeFormulaFieldService",
+      "method": "second"
+    },
+    "WEEKDAY": {
+      "category": "Date",
+      "description": "Returns the day of the week (1=Monday, 7=Sunday)",
+      "parameters": [
+        {
+          "name": "date",
+          "type": "Object",
+          "description": "Date value",
+          "required": true
+        }
+      ],
+      "return_type": "int",
+      "examples": [
+        "WEEKDAY(TODAY())",
+        "WEEKDAY(dueDate)"
+      ],
+      "use_cases": [
+        "Day of week calculation",
+        "Weekend detection",
+        "Schedule planning"
+      ],
+      "related_functions": ["DAY", "ISOWEEK", "DAYOFYEAR"],
+      "class": "DateAndTimeFormulaFieldService",
+      "method": "weekday"
+    },
+    "FORMATDATE": {
+      "category": "Date",
+      "description": "Formats a date using the specified format pattern",
+      "parameters": [
+        {
+          "name": "date",
+          "type": "Object",
+          "description": "Date to format",
+          "required": true
+        },
+        {
+          "name": "format",
+          "type": "String",
+          "description": "Format pattern",
+          "required": true
+        }
+      ],
+      "return_type": "String",
+      "examples": [
+        "FORMATDATE(TODAY(), 'yyyy-MM-dd')",
+        "FORMATDATE(createdDate, 'MMM dd, yyyy')"
+      ],
+      "use_cases": [
+        "Date formatting",
+        "Display customization",
+        "Regional date formats"
+      ],
+      "related_functions": ["DATEVALUE", "TEXT", "NOW"],
+      "class": "DateAndTimeFormulaFieldService",
+      "method": "formatDate"
+    },
+    "DURATIONINDAYS": {
+      "category": "Date",
+      "description": "Calculates duration between two dates in days",
+      "parameters": [
+        {
+          "name": "startDate",
+          "type": "Object",
+          "description": "Start date",
+          "required": true
+        },
+        {
+          "name": "endDate",
+          "type": "Object",
+          "description": "End date",
+          "required": true
+        }
+      ],
+      "return_type": "long",
+      "examples": [
+        "DURATIONINDAYS(createdDate, TODAY())",
+        "DURATIONINDAYS(startDate, endDate)"
+      ],
+      "use_cases": [
+        "Age calculations",
+        "Duration tracking",
+        "Time analysis"
+      ],
+      "related_functions": ["DURATIONINMONTHS", "DURATIONINYEARS", "ADDDAYS"],
+      "class": "DateAndTimeFormulaFieldService",
+      "method": "durationInDays"
+    },
+    "BGCOLOR": {
+      "category": "Html",
+      "description": "Wraps text with background color styling",
+      "parameters": [
+        {
+          "name": "color",
+          "type": "String",
+          "description": "Hex color code",
+          "required": true
+        },
+        {
+          "name": "text",
+          "type": "Object",
+          "description": "Text to style",
+          "required": true
+        }
+      ],
+      "return_type": "String",
+      "examples": [
+        "BGCOLOR('FF0000', 'Important')",
+        "BGCOLOR('E6F3FF', status)"
+      ],
+      "use_cases": [
+        "Text highlighting",
+        "Status indication",
+        "Visual formatting"
+      ],
+      "related_functions": ["TEXTCOLOR", "BADGECOLOR", "BGROWCOLOR"],
+      "class": "HtmlTextFormulaFieldService",
+      "method": "bgColor"
+    },
+    "TEXTCOLOR": {
+      "category": "Html",
+      "description": "Wraps text with foreground color styling",
+      "parameters": [
+        {
+          "name": "color",
+          "type": "String",
+          "description": "Hex color code",
+          "required": true
+        },
+        {
+          "name": "text",
+          "type": "Object",
+          "description": "Text to style",
+          "required": true
+        }
+      ],
+      "return_type": "String",
+      "examples": [
+        "TEXTCOLOR('0000FF', 'Blue Text')",
+        "TEXTCOLOR('FF0000', 'Error: ' + errorMessage)"
+      ],
+      "use_cases": [
+        "Text coloring",
+        "Status indication",
+        "Visual emphasis"
+      ],
+      "related_functions": ["BGCOLOR", "BADGECOLOR", "HYPERLINK"],
+      "class": "HtmlTextFormulaFieldService",
+      "method": "textColor"
+    },
+    "BADGECOLOR": {
+      "category": "Html",
+      "description": "Creates a colored badge with text",
+      "parameters": [
+        {
+          "name": "color",
+          "type": "String",
+          "description": "Hex color code",
+          "required": true
+        },
+        {
+          "name": "text",
+          "type": "Object",
+          "description": "Badge text",
+          "required": true
+        }
+      ],
+      "return_type": "String",
+      "examples": [
+        "BADGECOLOR('00FF00', 'Success')",
+        "BADGECOLOR('FF6600', priority)"
+      ],
+      "use_cases": [
+        "Status badges",
+        "Category indicators",
+        "Priority display"
+      ],
+      "related_functions": ["BGCOLOR", "TEXTCOLOR", "CASE"],
+      "class": "HtmlTextFormulaFieldService",
+      "method": "badgeColor"
+    },
+    "HYPERLINK": {
+      "category": "Html",
+      "description": "Creates an Html hyperlink",
+      "parameters": [
+        {
+          "name": "url",
+          "type": "String",
+          "description": "URL destination",
+          "required": true
+        },
+        {
+          "name": "text",
+          "type": "Object",
+          "description": "Link text",
+          "required": true
+        }
+      ],
+      "return_type": "String",
+      "examples": [
+        "HYPERLINK('https://example.com', 'Click Here')",
+        "HYPERLINK('mailto:' + email, firstName + ' ' + lastName)"
+      ],
+      "use_cases": [
+        "Link creation",
+        "Email links",
+        "External references"
+      ],
+      "related_functions": ["TEXTCOLOR", "TEXT", "UPPER"],
+      "class": "HtmlTextFormulaFieldService",
+      "method": "hyperlink"
+    },
+    "Html": {
+      "category": "Html",
+      "description": "Evaluates MVEL expressions in Html template",
+      "parameters": [
+        {
+          "name": "template",
+          "type": "String",
+          "description": "Html template with ${expression} placeholders",
+          "required": true
+        },
+        {
+          "name": "variables",
+          "type": "Map<String, Object>",
+          "description": "Variables for evaluation",
+          "required": true
+        }
+      ],
+      "return_type": "String",
+      "examples": [
+        "Html('<p>Hello ${name}</p>', {'name': 'World'})",
+        "Html('<div>${title}: ${value}</div>', variables)"
+      ],
+      "use_cases": [
+        "Dynamic Html generation",
+        "Template rendering",
+        "Complex formatting"
+      ],
+      "related_functions": ["TEXTCOLOR", "BGCOLOR", "HYPERLINK"],
+      "class": "HtmlTextFormulaFieldService",
+      "method": "Html"
+    },
+    "TEXT": {
+      "category": "Text",
+      "description": "Converts any value to text",
+      "parameters": [
+        {
+          "name": "text",
+          "type": "Object",
+          "description": "Value to convert",
+          "required": true
+        }
+      ],
+      "return_type": "String",
+      "examples": [
+        "TEXT(123)",
+        "TEXT(amount)"
+      ],
+      "use_cases": [
+        "Type conversion",
+        "String formatting",
+        "Display preparation"
+      ],
+      "related_functions": ["VALUE", "UPPER", "LOWER"],
+      "class": "TextFormulaFieldService",
+      "method": "text"
+    },
+    "UPPER": {
+      "category": "Text",
+      "description": "Converts text to uppercase",
+      "parameters": [
+        {
+          "name": "text",
+          "type": "String",
+          "description": "Text to convert",
+          "required": true
+        }
+      ],
+      "return_type": "String",
+      "examples": [
+        "UPPER('hello')",
+        "UPPER(firstName)"
+      ],
+      "use_cases": [
+        "Text normalization",
+        "Formatting",
+        "Case conversion"
+      ],
+      "related_functions": ["LOWER", "INITCAP", "TEXT"],
+      "class": "TextFormulaFieldService",
+      "method": "upper"
+    },
+    "LOWER": {
+      "category": "Text",
+      "description": "Converts text to lowercase",
+      "parameters": [
+        {
+          "name": "text",
+          "type": "String",
+          "description": "Text to convert",
+          "required": true
+        }
+      ],
+      "return_type": "String",
+      "examples": [
+        "LOWER('HELLO')",
+        "LOWER(lastName)"
+      ],
+      "use_cases": [
+        "Text normalization",
+        "Email formatting",
+        "Case conversion"
+      ],
+      "related_functions": ["UPPER", "INITCAP", "TEXT"],
+      "class": "TextFormulaFieldService",
+      "method": "lower"
+    },
+    "LEN": {
+      "category": "Text",
+      "description": "Returns length of text",
+      "parameters": [
+        {
+          "name": "text",
+          "type": "String",
+          "description": "Text to measure",
+          "required": true
+        }
+      ],
+      "return_type": "int",
+      "examples": [
+        "LEN('Hello')",
+        "LEN(description)"
+      ],
+      "use_cases": [
+        "Length validation",
+        "Character counting",
+        "String analysis"
+      ],
+      "related_functions": ["LEFT", "RIGHT", "MID"],
+      "class": "TextFormulaFieldService",
+      "method": "len"
+    },
+    "LEFT": {
+      "category": "Text",
+      "description": "Returns leftmost characters",
+      "parameters": [
+        {
+          "name": "text",
+          "type": "String",
+          "description": "Source text",
+          "required": true
+        },
+        {
+          "name": "length",
+          "type": "int",
+          "description": "Number of characters",
+          "required": true
+        }
+      ],
+      "return_type": "String",
+      "examples": [
+        "LEFT('Hello World', 5)",
+        "LEFT(firstName, 1)"
+      ],
+      "use_cases": [
+        "Text truncation",
+        "Initial extraction",
+        "Substring operations"
+      ],
+      "related_functions": ["RIGHT", "MID", "LEN"],
+      "class": "TextFormulaFieldService",
+      "method": "left"
+    },
+    "RIGHT": {
+      "category": "Text",
+      "description": "Returns rightmost characters",
+      "parameters": [
+        {
+          "name": "text",
+          "type": "String",
+          "description": "Source text",
+          "required": true
+        },
+        {
+          "name": "length",
+          "type": "int",
+          "description": "Number of characters",
+          "required": true
+        }
+      ],
+      "return_type": "String",
+      "examples": [
+        "RIGHT('Hello World', 5)",
+        "RIGHT(phoneNumber, 4)"
+      ],
+      "use_cases": [
+        "Text truncation",
+        "Suffix extraction",
+        "Substring operations"
+      ],
+      "related_functions": ["LEFT", "MID", "LEN"],
+      "class": "TextFormulaFieldService",
+      "method": "right"
+    },
+    "MID": {
+      "category": "Text",
+      "description": "Extracts substring from specified position",
+      "parameters": [
+        {
+          "name": "text",
+          "type": "String",
+          "description": "Source text",
+          "required": true
+        },
+        {
+          "name": "start",
+          "type": "int",
+          "description": "Starting position",
+          "required": true
+        },
+        {
+          "name": "length",
+          "type": "int",
+          "description": "Length to extract",
+          "required": true
+        }
+      ],
+      "return_type": "String",
+      "examples": [
+        "MID('Hello World', 6, 5)",
+        "MID(fullName, 5, 10)"
+      ],
+      "use_cases": [
+        "Substring extraction",
+        "Text parsing",
+        "Data extraction"
+      ],
+      "related_functions": ["LEFT", "RIGHT", "FIND"],
+      "class": "TextFormulaFieldService",
+      "method": "mid"
+    },
+    "FIND": {
+      "category": "Text",
+      "description": "Returns index of first occurrence of substring",
+      "parameters": [
+        {
+          "name": "text",
+          "type": "String",
+          "description": "Text to search",
+          "required": true
+        },
+        {
+          "name": "substring",
+          "type": "String",
+          "description": "Substring to find",
+          "required": true
+        }
+      ],
+      "return_type": "int",
+      "examples": [
+        "FIND('Hello World', 'World')",
+        "FIND(email, '@')"
+      ],
+      "use_cases": [
+        "Text searching",
+        "Position finding",
+        "String analysis"
+      ],
+      "related_functions": ["CONTAINS", "MID", "SUBSTITUTE"],
+      "class": "TextFormulaFieldService",
+      "method": "find"
+    },
+    "CONTAINS": {
+      "category": "Text",
+      "description": "Checks if text contains substring",
+      "parameters": [
+        {
+          "name": "text",
+          "type": "String",
+          "description": "Text to search",
+          "required": true
+        },
+        {
+          "name": "substring",
+          "type": "String",
+          "description": "Substring to find",
+          "required": true
+        }
+      ],
+      "return_type": "Boolean",
+      "examples": [
+        "CONTAINS('Hello World', 'World')",
+        "CONTAINS(description, 'urgent')"
+      ],
+      "use_cases": [
+        "Text searching",
+        "Keyword detection",
+        "Content filtering"
+      ],
+      "related_functions": ["FIND", "INCLUDES", "BEGINS"],
+      "class": "TextFormulaFieldService",
+      "method": "contains"
+    },
+    "SUBSTITUTE": {
+      "category": "Text",
+      "description": "Replaces all occurrences of substring",
+      "parameters": [
+        {
+          "name": "text",
+          "type": "String",
+          "description": "Source text",
+          "required": true
+        },
+        {
+          "name": "oldSubstring",
+          "type": "String",
+          "description": "Text to replace",
+          "required": true
+        },
+        {
+          "name": "newSubstring",
+          "type": "String",
+          "description": "Replacement text",
+          "required": true
+        }
+      ],
+      "return_type": "String",
+      "examples": [
+        "SUBSTITUTE('Hello World', 'World', 'Universe')",
+        "SUBSTITUTE(phoneNumber, '-', '')"
+      ],
+      "use_cases": [
+        "Text replacement",
+        "Data cleaning",
+        "Format conversion"
+      ],
+      "related_functions": ["FIND", "CONTAINS", "TRIM"],
+      "class": "TextFormulaFieldService",
+      "method": "substitute"
+    },
+    "TRIM": {
+      "category": "Text",
+      "description": "Removes leading and trailing whitespace",
+      "parameters": [
+        {
+          "name": "text",
+          "type": "String",
+          "description": "Text to trim",
+          "required": true
+        }
+      ],
+      "return_type": "String",
+      "examples": [
+        "TRIM('  Hello  ')",
+        "TRIM(inputField)"
+      ],
+      "use_cases": [
+        "Data cleaning",
+        "Input sanitization",
+        "Text normalization"
+      ],
+      "related_functions": ["SUBSTITUTE", "UPPER", "LOWER"],
+      "class": "TextFormulaFieldService",
+      "method": "trim"
+    },
+    "VALUE": {
+      "category": "Text",
+      "description": "Converts text to numeric value",
+      "parameters": [
+        {
+          "name": "text",
+          "type": "String",
+          "description": "Text representation of number",
+          "required": true
+        }
+      ],
+      "return_type": "double",
+      "examples": [
+        "VALUE('123.45')",
+        "VALUE(stringAmount)"
+      ],
+      "use_cases": [
+        "Type conversion",
+        "String to number",
+        "Mathematical operations"
+      ],
+      "related_functions": ["TEXT", "ISNUMBER", "ROUND"],
+      "class": "TextFormulaFieldService",
+      "method": "value"
+    },
+    "INITCAP": {
+      "category": "Text",
+      "description": "Capitalizes first letter of each word",
+      "parameters": [
+        {
+          "name": "text",
+          "type": "String",
+          "description": "Text to capitalize",
+          "required": true
+        }
+      ],
+      "return_type": "String",
+      "examples": [
+        "INITCAP('hello world')",
+        "INITCAP(fullName)"
+      ],
+      "use_cases": [
+        "Name formatting",
+        "Title case conversion",
+        "Text presentation"
+      ],
+      "related_functions": ["UPPER", "LOWER", "TEXT"],
+      "class": "TextFormulaFieldService",
+      "method": "initCap"
+    },
+    "ABS": {
+      "category": "Math",
+      "description": "Returns absolute value of a number",
+      "parameters": [
+        {
+          "name": "number",
+          "type": "double",
+          "description": "Number to get absolute value",
+          "required": true
+        }
+      ],
+      "return_type": "double",
+      "examples": [
+        "ABS(-5.5)",
+        "ABS(variance)"
+      ],
+      "use_cases": [
+        "Absolute calculations",
+        "Distance calculations",
+        "Error measurements"
+      ],
+      "related_functions": ["ROUND", "CEILING", "FLOOR"],
+      "class": "MathFormulaFieldService",
+      "method": "abs"
+    },
+    "MIN": {
+      "category": "Math",
+      "description": "Returns minimum value from multiple numbers",
+      "parameters": [
+        {
+          "name": "values",
+          "type": "double...",
+          "description": "Numbers to compare",
+          "required": true
+        }
+      ],
+      "return_type": "double",
+      "examples": [
+        "MIN(5, 3, 8, 1)",
+        "MIN(price1, price2, price3)"
+      ],
+      "use_cases": [
+        "Minimum finding",
+        "Comparison operations",
+        "Range calculations"
+      ],
+      "related_functions": ["MAX", "ABS", "ROUND"],
+      "class": "MathFormulaFieldService",
+      "method": "min"
+    },
+    "MAX": {
+      "category": "Math",
+      "description": "Returns maximum value from multiple numbers",
+      "parameters": [
+        {
+          "name": "values",
+          "type": "double...",
+          "description": "Numbers to compare",
+          "required": true
+        }
+      ],
+      "return_type": "double",
+      "examples": [
+        "MAX(5, 3, 8, 1)",
+        "MAX(score1, score2, score3)"
+      ],
+      "use_cases": [
+        "Maximum finding",
+        "Comparison operations",
+        "Range calculations"
+      ],
+      "related_functions": ["MIN", "ABS", "ROUND"],
+      "class": "MathFormulaFieldService",
+      "method": "max"
+    },
+    "ROUND": {
+      "category": "Math",
+      "description": "Rounds number to nearest integer",
+      "parameters": [
+        {
+          "name": "number",
+          "type": "double",
+          "description": "Number to round",
+          "required": true
+        }
+      ],
+      "return_type": "long",
+      "examples": [
+        "ROUND(5.7)",
+        "ROUND(amount * 0.15)"
+      ],
+      "use_cases": [
+        "Number rounding",
+        "Currency calculations",
+        "Precision control"
+      ],
+      "related_functions": ["CEILING", "FLOOR", "TRUNC"],
+      "class": "MathFormulaFieldService",
+      "method": "round"
+    },
+    "CEILING": {
+      "category": "Math",
+      "description": "Returns smallest integer greater than or equal to value",
+      "parameters": [
+        {
+          "name": "value",
+          "type": "double",
+          "description": "Input value",
+          "required": true
+        }
+      ],
+      "return_type": "double",
+      "examples": [
+        "CEILING(5.3)",
+        "CEILING(quantity / batchSize)"
+      ],
+      "use_cases": [
+        "Rounding up",
+        "Batch calculations",
+        "Capacity planning"
+      ],
+      "related_functions": ["FLOOR", "ROUND", "TRUNC"],
+      "class": "MathFormulaFieldService",
+      "method": "ceiling"
+    },
+    "FLOOR": {
+      "category": "Math",
+      "description": "Returns largest integer less than or equal to value",
+      "parameters": [
+        {
+          "name": "value",
+          "type": "double",
+          "description": "Input value",
+          "required": true
+        }
+      ],
+      "return_type": "double",
+      "examples": [
+        "FLOOR(5.7)",
+        "FLOOR(totalMinutes / 60)"
+      ],
+      "use_cases": [
+        "Rounding down",
+        "Integer conversion",
+        "Batch calculations"
+      ],
+      "related_functions": ["CEILING", "ROUND", "TRUNC"],
+      "class": "MathFormulaFieldService",
+      "method": "floor"
+    },
+    "SQRT": {
+      "category": "Math",
+      "description": "Returns square root of value",
+      "parameters": [
+        {
+          "name": "value",
+          "type": "double",
+          "description": "Input value (must be non-negative)",
+          "required": true
+        }
+      ],
+      "return_type": "double",
+      "examples": [
+        "SQRT(16)",
+        "SQRT(area)"
+      ],
+      "use_cases": [
+        "Mathematical calculations",
+        "Geometric operations",
+        "Statistical functions"
+      ],
+      "related_functions": ["EXP", "LOG", "LN"],
+      "class": "MathFormulaFieldService",
+      "method": "sqrt"
+    },
+    "SIN": {
+      "category": "Math",
+      "description": "Returns sine of angle in radians",
+      "parameters": [
+        {
+          "name": "angle",
+          "type": "double",
+          "description": "Angle in radians",
+          "required": true
+        }
+      ],
+      "return_type": "double",
+      "examples": [
+        "SIN(1.5708)",
+        "SIN(angle * 3.14159 / 180)"
+      ],
+      "use_cases": [
+        "Trigonometric calculations",
+        "Wave functions",
+        "Geometric operations"
+      ],
+      "related_functions": ["COS", "TAN", "ASIN"],
+      "class": "MathFormulaFieldService",
+      "method": "sin"
+    },
+    "COS": {
+      "category": "Math",
+      "description": "Returns cosine of angle in radians",
+      "parameters": [
+        {
+          "name": "angle",
+          "type": "double",
+          "description": "Angle in radians",
+          "required": true
+        }
+      ],
+      "return_type": "double",
+      "examples": [
+        "COS(0)",
+        "COS(angle * 3.14159 / 180)"
+      ],
+      "use_cases": [
+        "Trigonometric calculations",
+        "Wave functions",
+        "Geometric operations"
+      ],
+      "related_functions": ["SIN", "TAN", "ACOS"],
+      "class": "MathFormulaFieldService",
+      "method": "cos"
+    },
+    "CALCULATEDISTANCE": {
+      "category": "Math",
+      "description": "Calculates distance between two points using Haversine formula",
+      "parameters": [
+        {
+          "name": "lat1",
+          "type": "double",
+          "description": "Latitude of first point",
+          "required": true
+        },
+        {
+          "name": "lon1",
+          "type": "double",
+          "description": "Longitude of first point",
+          "required": true
+        },
+        {
+          "name": "lat2",
+          "type": "double",
+          "description": "Latitude of second point",
+          "required": true
+        },
+        {
+          "name": "lon2",
+          "type": "double",
+          "description": "Longitude of second point",
+          "required": true
+        }
+      ],
+      "return_type": "double",
+      "examples": [
+        "CALCULATEDISTANCE(40.7128, -74.0060, 34.0522, -118.2437)",
+        "CALCULATEDISTANCE(startLat, startLon, endLat, endLon)"
+      ],
+      "use_cases": [
+        "Distance calculations",
+        "Geographic analysis",
+        "Location-based services"
+      ],
+      "related_functions": ["ABS", "SQRT", "SIN", "COS"],
+      "class": "MathFormulaFieldService",
+      "method": "calculateDistance"
+    },
+    "CURRENTUSERID": {
+      "category": "Context",
+      "description": "Returns the current user's ID",
+      "parameters": [],
+      "return_type": "String",
+      "examples": [
+        "CURRENTUSERID()",
+        "IF(ownerId == CURRENTUSERID(), 'Owner', 'Other')"
+      ],
+      "use_cases": [
+        "User identification",
+        "Ownership checks",
+        "Access control"
+      ],
+      "related_functions": ["CURRENTUSEREMAIL", "CURRENTUSERFULLNAME"],
+      "class": "ContextValueFormulaFieldService",
+      "method": "currentUserId"
+    },
+    "CURRENTUSEREMAIL": {
+      "category": "Context",
+      "description": "Returns the current user's email",
+      "parameters": [],
+      "return_type": "String",
+      "examples": [
+        "CURRENTUSEREMAIL()",
+        "HYPERLINK('mailto:' + CURRENTUSEREMAIL(), 'Contact Me')"
+      ],
+      "use_cases": [
+        "Email references",
+        "Contact information",
+        "User identification"
+      ],
+      "related_functions": ["CURRENTUSERID", "CURRENTUSERFULLNAME"],
+      "class": "ContextValueFormulaFieldService",
+      "method": "currentUserEmail"
+    },
+    "CURRENTUSERFULLNAME": {
+      "category": "Context",
+      "description": "Returns the current user's full name",
+      "parameters": [],
+      "return_type": "String",
+      "examples": [
+        "CURRENTUSERFULLNAME()",
+        "'Created by: ' + CURRENTUSERFULLNAME()"
+      ],
+      "use_cases": [
+        "User display",
+        "Attribution",
+        "Personalization"
+      ],
+      "related_functions": ["CURRENTUSERID", "CURRENTUSEREMAIL"],
+      "class": "ContextValueFormulaFieldService",
+      "method": "currentUserFullName"
+    },
+    "CURRENTORGANISATIONNAME": {
+      "category": "Context",
+      "description": "Returns the current organization's name",
+      "parameters": [],
+      "return_type": "String",
+      "examples": [
+        "CURRENTORGANISATIONNAME()",
+        "CURRENTORGANISATIONNAME() + ' - ' + recordName"
+      ],
+      "use_cases": [
+        "Organization branding",
+        "Multi-tenant display",
+        "Context information"
+      ],
+      "related_functions": ["CURRENTORGANISATIONID", "CURRENTUSERID"],
+      "class": "ContextValueFormulaFieldService",
+      "method": "currentOrganisationName"
+    },
+    "CURRENTUSERROLENAME": {
+      "category": "Context",
+      "description": "Returns the current user's role name",
+      "parameters": [],
+      "return_type": "String",
+      "examples": [
+        "CURRENTUSERROLENAME()",
+        "IF(CURRENTUSERROLENAME() == 'Manager', 'Full Access', 'Limited')"
+      ],
+      "use_cases": [
+        "Role-based logic",
+        "Access control",
+        "Permission checks"
+      ],
+      "related_functions": ["CURRENTUSERROLEID", "CURRENTUSERID"],
+      "class": "ContextValueFormulaFieldService",
+      "method": "currentUserRoleName"
+    },
+    "CURRENTUSERDEPARTMENT": {
+      "category": "Context",
+      "description": "Returns the current user's department name",
+      "parameters": [],
+      "return_type": "String",
+      "examples": [
+        "CURRENTUSERDEPARTMENT()",
+        "CASE(CURRENTUSERDEPARTMENT(), 'Sales', 'Sales Team', 'General')"
+      ],
+      "use_cases": [
+        "Department-based logic",
+        "Organizational structure",
+        "Context awareness"
+      ],
+      "related_functions": ["CURRENTUSERDEPARTMENTID", "CURRENTUSERROLENAME"],
+      "class": "ContextValueFormulaFieldService",
+      "method": "currentUserDepartment"
+    }
+  },
+  "categories": {
+    "Logical": {
+      "description": "Boolean logic operations and conditional evaluation",
+      "functions": ["IF", "AND", "OR", "NOT", "BLANKVALUE", "ISBLANK", "ISNULL", "ISNUMBER", "NULLVALUE", "CASE"],
+      "common_use_cases": ["Conditional formatting", "Validation", "Default values", "Decision logic"]
+    },
+    "Date": {
+      "description": "Date and time operations, supporting multiple input formats",
+      "functions": ["DATE", "DATEVALUE", "TODAY", "NOW", "ADDMONTHS", "ADDDAYS", "DATETIMEVALUE", "DAY", "MONTH", "YEAR", "HOUR", "MINUTE", "SECOND", "WEEKDAY", "FORMATDATE", "DURATIONINDAYS"],
+      "common_use_cases": ["Date calculations", "Time formatting", "Duration analysis", "Calendar operations"]
+    },
+    "Html": {
+      "description": "Html markup generation for styling and interactive elements",
+      "functions": ["BGCOLOR", "TEXTCOLOR", "BADGECOLOR", "HYPERLINK", "Html"],
+      "common_use_cases": ["Visual formatting", "Status indicators", "Link creation", "Dynamic Html"]
+    },
+    "Text": {
+      "description": "Comprehensive text manipulation capabilities",
+      "functions": ["TEXT", "UPPER", "LOWER", "LEN", "LEFT", "RIGHT", "MID", "FIND", "CONTAINS", "SUBSTITUTE", "TRIM", "VALUE", "INITCAP"],
+      "common_use_cases": ["String manipulation", "Text formatting", "Data cleaning", "Search operations"]
+    },
+    "Math": {
+      "description": "Mathematical operations and calculations",
+      "functions": ["ABS", "MIN", "MAX", "ROUND", "CEILING", "FLOOR", "SQRT", "SIN", "COS", "CALCULATEDISTANCE"],
+      "common_use_cases": ["Calculations", "Statistics", "Geometric operations", "Rounding"]
+    },
+    "Context": {
+      "description": "Access to current user, organization, and employee context information",
+      "functions": ["CURRENTUSERID", "CURRENTUSEREMAIL", "CURRENTUSERFULLNAME", "CURRENTORGANISATIONNAME", "CURRENTUSERROLENAME", "CURRENTUSERDEPARTMENT"],
+      "common_use_cases": ["User identification", "Access control", "Personalization", "Context awareness"]
+    }
+  },
+  "common_patterns": {
+    "field_validation": {
+      "description": "Patterns for validating field values",
+      "examples": [
+        "IF(ISBLANK(email), 'Email Required', 'Valid')",
+        "IF(ISNUMBER(amount), amount, 0)",
+        "IF(LEN(phoneNumber) < 10, 'Invalid Phone', phoneNumber)"
+      ]
+    },
+    "conditional_formatting": {
+      "description": "Patterns for conditional visual formatting",
+      "examples": [
+        "IF(status == 'Active', BADGECOLOR('00FF00', 'ACTIVE'), BADGECOLOR('FF0000', 'INACTIVE'))",
+        "CASE(priority, 'High', TEXTCOLOR('FF0000', 'HIGH'), 'Medium', TEXTCOLOR('FFA500', 'MEDIUM'), TEXTCOLOR('000000', 'LOW'))"
+      ]
+    },
+    "date_calculations": {
+      "description": "Common date calculation patterns",
+      "examples": [
+        "DURATIONINDAYS(createdDate, TODAY()) + ' days old'",
+        "FORMATDATE(ADDDAYS(TODAY(), 30), 'yyyy-MM-dd')",
+        "IF(dueDate < TODAY(), 'OVERDUE', 'ON TIME')"
+      ]
+    },
+    "text_manipulation": {
+      "description": "Common text processing patterns",
+      "examples": [
+        "UPPER(firstName) + ' ' + UPPER(lastName)",
+        "SUBSTITUTE(phoneNumber, '-', '')",
+        "LEFT(email, FIND(email, '@') - 1)"
+      ]
+    },
+    "user_context": {
+      "description": "Patterns using current user context",
+      "examples": [
+        "IF(CURRENTUSERROLENAME() == 'Manager', 'Full Access', 'Limited')",
+        "CURRENTUSERFULLNAME() + ' (' + CURRENTUSERDEPARTMENT() + ')'",
+        "IF(ownerId == CURRENTUSERID(), 'My Record', 'Other')"
+      ]
+    }
+  },
+  "metadata": {
+    "total_functions": 50,
+    "categories_count": 6,
+    "last_updated": "2024-07-17",
+    "version": "1.0",
+    "system": "CRM Formula Engine",
+    "integration": "MVEL Expression Engine"
+  }
+}
