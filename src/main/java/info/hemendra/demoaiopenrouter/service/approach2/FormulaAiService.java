@@ -143,7 +143,7 @@ public class FormulaAiService {
 
         String content = this.chatClient.prompt(finalPrompt)
                 .advisors(createMemoryAdvisor(sessionId))
-                //.tools(new ValidateFormula(chatClient))
+                .tools(new ValidateFormula(chatClient))
                 .call().content();
         return Flux.just(content != null ? content : "I apologize, but I couldn't process your request. Please try rephrasing your question or provide more context.");
     }
