@@ -83,6 +83,7 @@ public class FormulaAiService {
     }
 
     private Flux<String> handleFormulaGenerateRequest(String message, String sessionId) {
+
         //Step 1. break the problem into smaller problems
         List<String>  subProblems = breakProblemsIntoSmallerParts(message, sessionId);
 
